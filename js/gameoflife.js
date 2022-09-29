@@ -1,23 +1,68 @@
-function seed() {}
+function seed(a,b,c) {
+  return Array.prototype.slice.call(arguments);
 
-function same([x, y], [j, k]) {}
+}
+seed();
+
+function same([x, y], [j, k]) {
+  return x === j && y === k;
+}
 
 // The game state to search for `cell` is passed as the `this` value of the function.
-function contains(cell) {}
+function contains(cell) {
+  return this.some((c) => same(c, cell));
+}
 
-const printCell = (cell, state) => {};
+const printCell = (cell, state) => {
+  return contains.cell(state, cell) ? "\u25A3": "\u25A2";
+};
 
-const corners = (state = []) => {};
 
-const printCells = (state) => {};
+const corners = (state = []) => {
+  if (state.length === 0) {
+    return {
+      topRight: [0, 0],
+      bottomLeft: [0, 0]
+    }
+  }
+  const xs = state.map(([x, _]) => x);
+  const ys = state.map(([_, y]) => y);
+  return {
+  topRight: [Math.max(...xs), Math.max(...ys)],
+  bottomLeft: [Math.min(...xs), Math.min(...ys)]
+  }
+};
 
-const getNeighborsOf = ([x, y]) => {};
+const printCells = (state) => {
+  const { bottomLeft, topRight } = corners(state);
+  let accumulator = "";
+  for (let y = topRight[1]; y >= bottomLeft[1]; y--) {
+    let row = [];
+    for (let x = bottomLeft[0]; x <= topRight[0]; x++) {
+     row.push(printCell([x,y], state));
+    }  
+    accumulator += row.join("") + "\n";
+  }
+  return accumulator;
+};
+
+const getNeighborsOf = ([x, y]) => {
+[x-1, y+1], [x, y+1], [x+1, y+1],
+[x-1, y]              [x+1, y],
+[x-1, y-1], [x, y-1], [x+1, y-1]
+};
 
 const getLivingNeighbors = (cell, state) => {};
 
 const willBeAlive = (cell, state) => {};
 
-const calculateNext = (state) => {};
+const calculateNext = (state) => {
+  const {bottomLeft, topRight } = corners(state);
+  let result = [];
+  for (let y = topRight[1] + 1; y >= bottomLeft[1] - 1; y--) {
+
+  }
+};
 
 const iterate = (state, iterations) => {};
 
@@ -73,4 +118,6 @@ const startPatterns = {
   exports.printCells = printCells;
   exports.startPatterns = startPatterns;
   exports.iterate = iterate;
-  exports.main = main;
+  exports.main = main; 
+
+  // This is a test
