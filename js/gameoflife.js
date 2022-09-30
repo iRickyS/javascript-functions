@@ -1,6 +1,7 @@
 function seed(a, b, c) {
   return Array.prototype.slice.call(arguments);
 }
+
 function same([x, y], [j, k]) {
   return x === j && y === k;
 }
@@ -9,9 +10,11 @@ function same([x, y], [j, k]) {
 function contains(cell) {
   return this.some((c) => same(c, cell));
 }
+
 const printCell = (cell, state) => {
   return contains.call(state, cell) ? "\u25A2": "\u25A3";
 };
+
 const corners = (state = []) => {
   if(state.length === 0){
     return {
@@ -45,6 +48,7 @@ const getNeighborsOf = ([x, y]) => [
   [x-1, y],              [x+1, y],
   [x-1, y-1], [x, y-1], [x+1, y-1]
 ];
+
 const getLivingNeighbors = (cell, state) => {
   return getNeighborsOf(cell).filter((n) => contains.bind(state)(n));
 };
@@ -117,6 +121,7 @@ const startPatterns = {
       console.log("Usage: node js/gameoflife.js rpentomino 50");
     }
   }
+
   exports.seed = seed;
   exports.same = same;
   exports.contains = contains;
