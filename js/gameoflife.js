@@ -4,6 +4,7 @@ function seed(a, b, c) {
 function same([x, y], [j, k]) {
   return x === j && y === k;
 }
+
 // The game state to search for `cell` is passed as the `this` value of the function.
 function contains(cell) {
   return this.some((c) => same(c, cell));
@@ -25,6 +26,7 @@ const corners = (state = []) => {
     bottomLeft: [Math.min(...xs), Math.min(...ys)]
   }
 };
+
 const printCells = (state) => {
   const {bottomLeft, topRight} =corners(state);
   let accumulator ="";
@@ -37,6 +39,7 @@ const printCells = (state) => {
   }
   return accumulator;
 };
+
 const getNeighborsOf = ([x, y]) => [
   [x-1, y+1], [x, y+1], [x+1, y+1],
   [x-1, y],              [x+1, y],
@@ -45,6 +48,7 @@ const getNeighborsOf = ([x, y]) => [
 const getLivingNeighbors = (cell, state) => {
   return getNeighborsOf(cell).filter((n) => contains.bind(state)(n));
 };
+
 const willBeAlive = (cell, state) => {
   const livingNeighbors = getLivingNeighbors(cell, state);
   return (
@@ -52,6 +56,7 @@ const willBeAlive = (cell, state) => {
     (contains.call(state,cell) && livingNeighbors.length ===2)
   );
 };
+
 const calculateNext = (state) => {
   const { bottomLeft, topRight } = corners(state);
   let result = [];
@@ -62,6 +67,7 @@ const calculateNext = (state) => {
   }
   return result;
 };
+
 const iterate = (state, iterations) => {
   const states =[state];
   for (let i =0; i < iterations; i++) {
@@ -69,10 +75,12 @@ const iterate = (state, iterations) => {
   }
   return states;
 };
+
 const main = (pattern, iterations) => {
   const results = iterate(startPatterns[pattern], iterations);
   results.forEach(r => console.log(printCells(r)));
 };
+
 const startPatterns = {
     rpentomino: [
       [3, 2],
@@ -99,6 +107,7 @@ const startPatterns = {
       [2, 2]
     ]
   };
+  
   const [pattern, iterations] = process.argv.slice(2);
   const runAsScript = require.main === module;
   if (runAsScript) {
